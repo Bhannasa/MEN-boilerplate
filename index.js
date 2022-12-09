@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv').config();
-const authRoutes = require('./routes/auth');
+const router = require('./routes/index');
 const { responseTemplate } = require('./utils/response');
 
 const PORT = process.env.PORT || 80;
@@ -18,11 +18,8 @@ app.use(bodyParser.json({ limit: "10mb", extented: true }));
 //     credentials: true
 // }));
 app.use(cors());
-app.use('/auth', authRoutes)
 
-app.get('/healthcheck', async (req, res) => {
-    res.status(200).json(await responseTemplate(true, "Server is running", null, null))
-})
+app.use(router);
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 
